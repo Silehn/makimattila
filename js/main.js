@@ -1,5 +1,5 @@
 /**
- * Executive Web Solutions - Main JavaScript
+ * Makimattila Solutions - Main JavaScript
  * Professional interactions and functionality
  */
 
