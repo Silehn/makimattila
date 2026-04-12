@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personal Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:wght@500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:wght@500;600;700&display=swap"
+    rel="stylesheet">
   <style>
     /* CSS Variables - Design System */
     :root {
@@ -26,7 +29,9 @@
     }
 
     /* Reset & Base */
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -45,7 +50,12 @@
     }
 
     /* Typography */
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-family: 'Lora', Georgia, serif;
       font-weight: 600;
       line-height: 1.2;
@@ -296,7 +306,7 @@
 
     /* Hero Section */
     .hero {
-      min-height: 100vh;
+      min-height: 80vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -330,6 +340,7 @@
 
     /* About Section */
     .about {
+      min-height: 80vh;
       padding: 5rem 0;
       background: linear-gradient(to bottom, transparent, rgba(230, 227, 218, 0.3), transparent);
     }
@@ -431,7 +442,7 @@
       margin-bottom: 0.5rem;
     }
 
-    .contact-card > p {
+    .contact-card>p {
       text-align: center;
       color: var(--text-secondary);
       margin-bottom: 1.5rem;
@@ -477,6 +488,7 @@
 
       .about-content {
         order: 1;
+
       }
 
       .about-image {
@@ -488,9 +500,14 @@
       .projects-grid {
         grid-template-columns: repeat(3, 1fr);
       }
+
+      .about {
+        scroll-margin-top: 15vh;
+      }
     }
   </style>
 </head>
+
 <body>
   <!-- Header -->
   <header class="app-header">
@@ -521,11 +538,11 @@
   <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="hero-content">
-      <h1>Hello, I'm a Creator</h1>
-      <p class="hero-tagline">Building thoughtful digital experiences with care and craft.</p>
+      <h1>Hei, olen Samu</h1>
+      <p class="hero-tagline">Teen verkkosivuja ja sovelluksia.</p>
       <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">View Projects</a>
-        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+        <a href="#projects" class="btn btn-primary">Projektit</a>
+        <a href="#contact" class="btn btn-secondary">Ota yhteyttä</a>
       </div>
     </div>
   </section>
@@ -536,12 +553,17 @@
       <div class="about-grid">
         <div class="about-content">
           <h2>About Me</h2>
-          <p>I'm a passionate creator who loves turning ideas into reality. With a background in design and development, I bring a unique perspective to every project I work on. I believe in the power of simplicity and attention to detail.</p>
-          <p style="margin-top: 1rem;">When I'm not crafting digital experiences, you'll find me exploring new technologies, reading, or enjoying the outdoors. I'm always excited to collaborate on meaningful projects.</p>
+          <p>I'm a passionate creator who loves turning ideas into reality. With a background in design and development,
+            I bring a unique perspective to every project I work on. I believe in the power of simplicity and attention
+            to detail.</p>
+          <p style="margin-top: 1rem;">When I'm not crafting digital experiences, you'll find me exploring new
+            technologies, reading, or enjoying the outdoors. I'm always excited to collaborate on meaningful projects.
+          </p>
         </div>
         <div class="about-image">
           <div class="card" style="padding: 0.5rem;">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" alt="Profile" class="avatar">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+              alt="Profile" class="avatar">
           </div>
         </div>
       </div>
@@ -558,7 +580,8 @@
       <div class="projects-grid">
         <article class="card project-card">
           <h3>Project Alpha</h3>
-          <p>A modern web application built with clean architecture and intuitive design. Focused on user experience and performance.</p>
+          <p>A modern web application built with clean architecture and intuitive design. Focused on user experience and
+            performance.</p>
           <div class="project-tags">
             <span class="tag">React</span>
             <span class="tag">TypeScript</span>
@@ -569,7 +592,8 @@
 
         <article class="card project-card">
           <h3>Project Beta</h3>
-          <p>An elegant dashboard for data visualization with real-time updates and customizable widgets for better insights.</p>
+          <p>An elegant dashboard for data visualization with real-time updates and customizable widgets for better
+            insights.</p>
           <div class="project-tags">
             <span class="tag">Vue.js</span>
             <span class="tag">D3.js</span>
@@ -591,7 +615,8 @@
 
         <article class="card project-card">
           <h3>Project Delta</h3>
-          <p>A collaborative tool for remote teams with real-time editing, comments, and project management features.</p>
+          <p>A collaborative tool for remote teams with real-time editing, comments, and project management features.
+          </p>
           <div class="project-tags">
             <span class="tag">Socket.io</span>
             <span class="tag">Express</span>
@@ -602,7 +627,8 @@
 
         <article class="card project-card">
           <h3>Project Epsilon</h3>
-          <p>An AI-powered content assistant that helps writers improve their work with smart suggestions and grammar checks.</p>
+          <p>An AI-powered content assistant that helps writers improve their work with smart suggestions and grammar
+            checks.</p>
           <div class="project-tags">
             <span class="tag">Python</span>
             <span class="tag">OpenAI</span>
@@ -613,7 +639,8 @@
 
         <article class="card project-card">
           <h3>Project Zeta</h3>
-          <p>A design system library with reusable components, documentation, and accessibility guidelines for teams.</p>
+          <p>A design system library with reusable components, documentation, and accessibility guidelines for teams.
+          </p>
           <div class="project-tags">
             <span class="tag">Storybook</span>
             <span class="tag">Figma</span>
@@ -631,9 +658,9 @@
       <div class="card contact-card">
         <h2>Get in Touch</h2>
         <p>Have a project in mind? Let's talk.</p>
-        
+
         <div class="form-status" id="formStatus"></div>
-        
+
         <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
           <div class="form-group">
             <label for="name" class="form-label">Name</label>
@@ -645,7 +672,8 @@
           </div>
           <div class="form-group">
             <label for="message" class="form-label">Message</label>
-            <textarea id="message" name="message" class="form-control" placeholder="Tell me about your project..." required></textarea>
+            <textarea id="message" name="message" class="form-control" placeholder="Tell me about your project..."
+              required></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
         </form>
@@ -687,7 +715,7 @@
 
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const submitButton = contactForm.querySelector('button[type="submit"]');
       const originalText = submitButton.textContent;
       submitButton.textContent = 'Sending...';
@@ -719,4 +747,5 @@
     });
   </script>
 </body>
+
 </html>
