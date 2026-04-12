@@ -347,7 +347,7 @@
 
     .about-grid {
       display: grid;
-      gap: 2rem;
+      gap: 1rem;
     }
 
     .about-content h2 {
@@ -362,13 +362,15 @@
 
     .about-image {
       display: flex;
+      height: auto;
+      width: auto;
       justify-content: center;
     }
 
     .avatar {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
+      width: 35vw;
+      height: auto;
+      border-radius: 8%;
       object-fit: cover;
       border: 3px solid var(--border);
     }
@@ -482,6 +484,8 @@
       }
 
       .about-grid {
+        display: flex;
+        gap: 2rem;
         grid-template-columns: 1fr 1fr;
         align-items: center;
       }
@@ -493,6 +497,11 @@
 
       .about-image {
         order: 2;
+      }
+
+      .avatar {
+        width: 20vw;
+        max-width: 200px;
       }
     }
 
@@ -515,9 +524,9 @@
       <div class="header-inner">
         <a href="#" class="logo">Samu Mäkimattila</a>
         <nav class="nav-desktop">
-          <a href="#about">About</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+          <a href="#about">Minusta</a>
+          <a href="#projects">Projektit</a>
+          <a href="#contact">Ota yhteyttä</a>
         </nav>
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
           <span></span>
@@ -530,9 +539,9 @@
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#about" class="mobile-nav-link">About</a>
-    <a href="#projects" class="mobile-nav-link">Projects</a>
-    <a href="#contact" class="mobile-nav-link">Contact</a>
+    <a href="#about" class="mobile-nav-link">Minusta</a>
+    <a href="#projects" class="mobile-nav-link">Projektit</a>
+    <a href="#contact" class="mobile-nav-link">Ota yhteyttä</a>
   </div>
 
   <!-- Hero Section -->
@@ -552,18 +561,20 @@
     <div class="container">
       <div class="about-grid">
         <div class="about-content">
-          <h2>About Me</h2>
-          <p>I'm a passionate creator who loves turning ideas into reality. With a background in design and development,
-            I bring a unique perspective to every project I work on. I believe in the power of simplicity and attention
-            to detail.</p>
-          <p style="margin-top: 1rem;">When I'm not crafting digital experiences, you'll find me exploring new
-            technologies, reading, or enjoying the outdoors. I'm always excited to collaborate on meaningful projects.
-          </p>
+          <h2>Minusta</h2>
+          <p>Olen intohimoinen tekijä, joka rakastaa ideoiden toteuttamista. Uskon yksinkertaisuuden ja
+            yksityiskohtien voimaan.</p>
+          <p style="margin-top: 1rem;">Olen 17-vuotias lukiolainen, joka on kiinnostunut teknologiasta ja
+            ohjelmoinnista.
+            Olen tehnyt nettisivuja ja sovelluksia jo muutaman vuoden ajan, ja olen aina innokas oppimaan uutta.
+            Olen myös kiinnostunut musiikista ja muusta teknologiasta.</p>
         </div>
-        <div class="about-image">
+        <div class="about-image" style="display: flex; gap: 1rem;">
           <div class="card" style="padding: 0.5rem;">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
-              alt="Profile" class="avatar">
+            <img src="onpa hieno puku.jpg" alt="Profile" class="avatar">
+          </div>
+          <div class="card" style="padding: 0.5rem;">
+            <img src="rumpukuva.jpg" alt="Profile" class="avatar">
           </div>
         </div>
       </div>
@@ -574,20 +585,20 @@
   <section class="projects" id="projects">
     <div class="container">
       <div class="section-header">
-        <h2>Selected Projects</h2>
-        <p>A few things I've been working on lately</p>
+        <h2>Projektit</h2>
+        <p>Joitain projektejani</p>
       </div>
       <div class="projects-grid">
         <article class="card project-card">
-          <h3>Project Alpha</h3>
-          <p>A modern web application built with clean architecture and intuitive design. Focused on user experience and
-            performance.</p>
+          <h3>Songbook.</h3>
+          <p>tekemäni verkkosovellus, joka on suunniteltu helpottamaan laulujen keräämistä. Se on
+            rakennettu modernilla teknologialla ja intuitiivisella suunnittelulla.</p>
           <div class="project-tags">
             <span class="tag">React</span>
             <span class="tag">TypeScript</span>
             <span class="tag">Tailwind</span>
           </div>
-          <a href="#" class="btn-icon">View <span>→</span></a>
+          <a href="https://songbook-amber.vercel.app/" class="btn-icon">Näytä <span>→</span></a>
         </article>
 
         <article class="card project-card">
@@ -656,26 +667,26 @@
   <section class="contact" id="contact">
     <div class="container">
       <div class="card contact-card">
-        <h2>Get in Touch</h2>
-        <p>Have a project in mind? Let's talk.</p>
+        <h2>Ota yhteyttä</h2>
+        <p>Haluatko minut töihin? Ota yhteyttä!</p>
 
         <div class="form-status" id="formStatus"></div>
 
-        <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <form id="contactForm" action="https://formspree.io/f/mgorwokr" method="POST">
           <div class="form-group">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="Your name" required>
+            <label for="name" class="form-label">Nimi</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Nimesi" required>
           </div>
           <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" class="form-control" placeholder="your@email.com" required>
+            <label for="email" class="form-label">Sähköposti</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="sina@esimerkki.com" required>
           </div>
           <div class="form-group">
-            <label for="message" class="form-label">Message</label>
-            <textarea id="message" name="message" class="form-control" placeholder="Tell me about your project..."
+            <label for="message" class="form-label">Viesti</label>
+            <textarea id="message" name="message" class="form-control" placeholder="Kerro mitä haluaisit"
               required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Lähetä viesti</button>
         </form>
       </div>
     </div>
@@ -684,7 +695,7 @@
   <!-- Footer -->
   <footer class="app-footer">
     <div class="container">
-      <p>&copy; © 2026 Made by Samu Mäkimattila</p>
+      <p>&copy; 2026 Samu Mäkimattila</p>
     </div>
   </footer>
 
@@ -732,14 +743,14 @@
 
         if (response.ok) {
           formStatus.className = 'form-status success';
-          formStatus.textContent = 'Thank you! Your message has been sent successfully.';
+          formStatus.textContent = 'Kiitos viestistäsi!';
           contactForm.reset();
         } else {
           throw new Error('Form submission failed');
         }
       } catch (error) {
         formStatus.className = 'form-status error';
-        formStatus.textContent = 'Oops! Something went wrong. Please try again later.';
+        formStatus.textContent = 'Jotain meni vikaan. Yritä myöhemmin uudelleen.';
       } finally {
         submitButton.textContent = originalText;
         submitButton.disabled = false;
