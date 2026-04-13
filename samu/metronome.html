@@ -105,13 +105,14 @@
         }
 
         .app-footer {
-            margin-top: auto;
-            padding: 20px 0;
-            border-top: 1px solid var(--border);
+            margin-top: 2px;
+            padding: 1px 0;
             text-align: center;
+        }
+
+        .app-footer p {
+            font-size: 0.875rem;
             color: var(--text-secondary);
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
         }
 
         .card {
@@ -520,7 +521,7 @@
         }
 
         .play-btn.playing:hover {
-            box-shadow: 0 0 44px rgba(224, 64, 96, 0.55), var(--shadow-md);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15), var(--shadow-md);
         }
 
         /* SVG icons embedded */
@@ -669,7 +670,6 @@
                             aria-label="Beats per minute" aria-valuemin="20" aria-valuemax="300" tabindex="0"
                             aria-valuenow="120">
                             <div class="bpm-value" id="bpm-display">120</div>
-                            <div class="bpm-label">BPM</div>
                         </div>
 
                         <button class="bpm-step-btn btn-icon" id="bpm-inc" aria-label="Increase BPM">+</button>
@@ -736,7 +736,7 @@
   ============================================================ -->
     <footer class="app-footer">
         <div class="container">
-            Made by Samu Mäkimattila
+            <p>&copy; 2026 Samu Mäkimattila</p>
         </div>
     </footer>
 
@@ -873,8 +873,7 @@
         }
 
         // ─── BPM +/- buttons ─────────────────────────────────────────
-        bpmDec.addEventListener('click', () => setBpm(state.bpm - 1));
-        bpmInc.addEventListener('click', () => setBpm(state.bpm + 1));
+
 
         // Hold to repeat
         function holdRepeat(btn, delta) {
