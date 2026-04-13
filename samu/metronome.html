@@ -75,34 +75,7 @@
             margin-top: 1rem;
         }
 
-        .app-header {
-            padding: 20px 0 16px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 32px;
-        }
 
-        .app-title {
-            font-family: var(--font-title);
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 0.01em;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .app-title .icon {
-            width: 32px;
-            height: 32px;
-            background: var(--accent);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-style: normal;
-            font-size: 18px;
-        }
 
         .app-footer {
             margin-top: 2px;
@@ -291,16 +264,7 @@
             background: var(--surface);
         }
 
-        .bpm-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-top: 10px;
-            font-family: var(--font-mono);
-        }
+
 
         .bpm-step-btn {
             width: 48px;
@@ -753,7 +717,6 @@
             clicksPerBeat: 1,
             isPlaying: false,
             currentBeat: 0,       // 0-indexed
-            currentSubdiv: 0,       // 0-indexed within beat
             beats: [],      // Array of { index, accentMode }
         };
 
@@ -865,11 +828,6 @@
             bpmDisplay.textContent = state.bpm;
             bpmDragArea.setAttribute('aria-valuenow', state.bpm);
             tempoMarking.textContent = getTempoMarking(state.bpm);
-            if (state.isPlaying) reschedule();
-        }
-
-        function reschedule() {
-            // Recompute interval; scheduler will pick it up on next tick
         }
 
         // ─── BPM +/- buttons ─────────────────────────────────────────
@@ -1022,8 +980,7 @@
         }
 
         // Track next beat/subdivide for UI sync
-        let nextBeatScheduledAt = 0;   // audioCtx time
-        let nextBeatIndex = 0;
+
         let pendingUI = [];   // {beatIdx, audioTime}
 
         function scheduler() {
