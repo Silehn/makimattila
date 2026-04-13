@@ -2,1135 +2,733 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Metronome</title>
-    <meta name="description"
-        content="A precise, feature-rich metronome for musicians. Set tempo, time signature, subdivisions, and control individual beat accents." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap"
-        rel="stylesheet" />
-
-    <style>
-        /* ============================================================
-       DESIGN SYSTEM — CSS Custom Properties
-    ============================================================ */
-        :root {
-            --bg-color: #faf9f5;
-            --text-primary: #2d2c2a;
-            --text-secondary: #5e5b56;
-            --surface: #fff;
-            --surface-2: #f2f1eb;
-            --border: #e6e3da;
-            --accent: #111;
-            --accent-light: #e6e3da;
-            --accent-glow: rgba(0, 0, 0, 0.05);
-            --font-body: "Inter", sans-serif;
-            --font-title: "Lora", serif;
-            --font-mono: "Fira Code", monospace;
-            --transition: all .2s cubic-bezier(.4, 0, .2, 1);
-            --shadow-sm: 0 1px 3px #0000000d;
-            --shadow-md: 0 4px 6px -1px #0000000d, 0 2px 4px -1px #00000008;
-            --radius-sm: 6px;
-            --radius-md: 10px;
-            --radius-lg: 16px;
-        }
-
-        /* ============================================================
-       RESET & BASE
-    ============================================================ */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg-color);
-            color: var(--text-primary);
-            font-family: var(--font-body);
-            min-height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ============================================================
-       LAYOUT PRIMITIVES
-    ============================================================ */
-        .container {
-            width: 100%;
-            max-width: 680px;
-            margin-inline: auto;
-            padding-inline: 20px;
-            margin-top: 1rem;
-        }
-
-        .app-header {
-            padding: 20px 0 16px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 32px;
-        }
-
-        .app-title {
-            font-family: var(--font-title);
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 0.01em;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .app-title .icon {
-            width: 32px;
-            height: 32px;
-            background: var(--accent);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-style: normal;
-            font-size: 18px;
-        }
-
-        .app-footer {
-            margin-top: auto;
-            padding: 20px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
-        }
-
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 24px;
-            box-shadow: var(--shadow-md);
-        }
-
-        /* ============================================================
-       BUTTONS
-    ============================================================ */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            background: transparent;
-            color: var(--text-primary);
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition:
-                background var(--transition),
-                border-color var(--transition),
-                color var(--transition),
-                box-shadow var(--transition),
-                transform var(--transition);
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .btn:active {
-            transform: scale(0.96);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background: #333;
-            border-color: #333;
-        }
-
-        .btn-secondary {
-            background: var(--surface-2);
-            border-color: var(--border);
-            color: var(--text-primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--surface-2);
-            border-color: var(--accent);
-        }
-
-        .btn-icon {
-            width: 38px;
-            height: 38px;
-            padding: 0;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .btn-icon:hover {
-            background: var(--surface-2);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        /* ============================================================
-       FORM CONTROLS
-    ============================================================ */
-        .form-control {
-            background: var(--surface-2);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text-primary);
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            padding: 9px 14px;
-            transition: border-color var(--transition), box-shadow var(--transition);
-            outline: none;
-            cursor: pointer;
-        }
-
-        .form-control:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-
-        select.form-control {
-            appearance: none;
-            -webkit-appearance: none;
-            padding-right: 32px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238892aa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-        }
-
-        .form-label {
-            font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: 0.07em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        /* ============================================================
-       SECTION LABEL
-    ============================================================ */
-        .section-label {
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 14px;
-        }
-
-        /* ============================================================
-       BPM DISPLAY
-    ============================================================ */
-        .bpm-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 28px;
-        }
-
-        .bpm-display-row {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .bpm-value-wrapper {
-            position: relative;
-            cursor: ns-resize;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .bpm-value {
-            font-family: var(--font-mono);
-            font-size: 5.5rem;
-            font-weight: 600;
-            line-height: 1;
-            color: var(--text-primary);
-            letter-spacing: -0.05em;
-            transition: var(--transition);
-            padding: 10px 24px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            background: var(--surface);
-        }
-
-        .bpm-value-wrapper:hover .bpm-value {
-            border-color: var(--text-secondary);
-        }
-
-        .bpm-value-wrapper:active .bpm-value,
-        .bpm-value-wrapper.dragging .bpm-value {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-glow);
-            background: var(--surface);
-        }
-
-        .bpm-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-top: 10px;
-            font-family: var(--font-mono);
-        }
-
-        .bpm-step-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            font-weight: 400;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            flex-shrink: 0;
-        }
-
-        .bpm-step-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #fff;
-        }
-
-        .bpm-step-btn:active {
-            transform: scale(0.9);
-        }
-
-        /* ============================================================
-       TAP TEMPO
-    ============================================================ */
-        .tap-btn {
-            width: 100%;
-            height: 44px;
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            letter-spacing: 0.04em;
-            white-space: nowrap;
-            padding-inline: 12px;
-        }
-
-        .tap-btn.active {
-            background: var(--surface-2);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        /* ============================================================
-       CONTROLS ROW
-    ============================================================ */
-        .controls-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 28px;
-            align-items: flex-end;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-        }
-
-        /* ============================================================
-       BEAT INDICATOR ROW
-    ============================================================ */
-        .beat-row-section {
-            margin-bottom: 28px;
-        }
-
-        .beat-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            max-width: 490px;
-            margin: 0 auto;
-        }
-
-        .beat-indicator {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            font-weight: 600;
-            transition:
-                background var(--transition),
-                border-color var(--transition),
-                color var(--transition),
-                box-shadow var(--transition),
-                transform 0.1s ease;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        /* accent mode */
-        .beat-indicator[data-mode="off"] {
-            background: transparent;
-            border-color: var(--border);
-            color: var(--text-secondary);
-            opacity: 0.3;
-        }
-
-        .beat-indicator[data-mode="on"] {
-            background: var(--surface-2);
-            border-color: var(--border);
-            color: var(--text-primary);
-        }
-
-        .beat-indicator[data-mode="accent"] {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #fff;
-        }
-
-        /* hover */
-        .beat-indicator[data-mode="off"]:hover {
-            opacity: 0.6;
-            transform: translateY(-2px);
-        }
-
-        .beat-indicator[data-mode="on"]:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .beat-indicator[data-mode="accent"]:hover {
-            transform: translateY(-2px);
-        }
-
-        /* active (current beat playing) */
-        .beat-indicator.active[data-mode="off"] {
-            opacity: 0.6;
-        }
-
-        .beat-indicator.active[data-mode="on"] {
-            background: var(--text-primary);
-            color: var(--surface);
-            transform: scale(1.1);
-        }
-
-        .beat-indicator.active[data-mode="accent"] {
-            background: var(--accent);
-            color: var(--surface);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            transform: scale(1.15);
-        }
-
-        /* pulse animation */
-        @keyframes beat-pulse {
-            0% {
-                box-shadow: 0 0 0px rgba(108, 143, 255, 0);
-            }
-
-            40% {
-                box-shadow: 0 0 22px rgba(108, 143, 255, 0.65);
-            }
-
-            100% {
-                box-shadow: 0 0 0px rgba(108, 143, 255, 0);
-            }
-        }
-
-        .beat-indicator.pulsing {
-            animation: beat-pulse 0.18s ease-out forwards;
-        }
-
-        /* ============================================================
-       PLAYBACK CONTROL
-    ============================================================ */
-        .playback-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 4px;
-        }
-
-        .play-btn {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: none;
-            background: var(--accent);
-            color: #fff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition);
-            flex-shrink: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .play-btn:hover {
-            background: #333;
-            transform: scale(1.05);
-        }
-
-        .play-btn:active {
-            transform: scale(0.95);
-        }
-
-        .play-btn.playing {
-            background: #fff;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-        }
-
-        .play-btn.playing:hover {
-            box-shadow: 0 0 44px rgba(224, 64, 96, 0.55), var(--shadow-md);
-        }
-
-        /* SVG icons embedded */
-        .icon-play {
-            display: block;
-        }
-
-        .icon-stop {
-            display: none;
-        }
-
-        .play-btn.playing .icon-play {
-            display: none;
-        }
-
-        .play-btn.playing .icon-stop {
-            display: block;
-        }
-
-        /* ============================================================
-       BEAT COUNTER (status line)
-    ============================================================ */
-        .beat-status {
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            text-align: center;
-            min-height: 1.6em;
-            margin-top: 12px;
-            letter-spacing: 0.06em;
-            transition: color var(--transition);
-        }
-
-        .beat-status.active {
-            color: var(--accent);
-        }
-
-        /* ============================================================
-       TEMPO RANGE / MARKING
-    ============================================================ */
-        .tempo-marking {
-            font-family: var(--font-title);
-            font-style: italic;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        /* ============================================================
-       DIVIDER
-    ============================================================ */
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 24px 0;
-        }
-
-        /* ============================================================
-       SCROLLBAR
-    ============================================================ */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-color);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-
-        /* ============================================================
-       RESPONSIVE
-    ============================================================ */
-        @media (max-width: 480px) {
-            .bpm-value {
-                font-size: 3.8rem;
-                padding: 6px 14px;
-            }
-
-            .controls-row {
-                grid-template-columns: 1fr 1fr;
-                gap: 16px 12px;
-            }
-
-            .controls-row .control-group:nth-child(2) {
-                grid-column: 1 / span 2;
-                order: -1;
-            }
-
-            .card {
-                padding: 18px 16px;
-            }
-
-            .play-btn {
-                width: 68px;
-                height: 68px;
-            }
-
-            .beat-indicator {
-                width: 44px;
-                height: 44px;
-                font-size: 0.65rem;
-            }
-        }
-
-        /* ============================================================
-       ANIMATIONS
-    ============================================================ */
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card {
-            animation: fade-in 0.4s ease forwards;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samu Mäkimattila</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&family=Lora:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* CSS Variables - Design System */
+    :root {
+      --bg-color: #faf9f5;
+      --text-primary: #2d2c2a;
+      --text-secondary: #5e5b56;
+      --surface: #fff;
+      --border: #e6e3da;
+      --accent: #111;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      --radius-card: 12px;
+      --radius-input: 8px;
+      --radius-button: 6px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Reset & Base */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Typography */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Lora', Georgia, serif;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .font-mono {
+      font-family: 'Fira Code', monospace;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: rgba(250, 249, 245, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-family: 'Lora', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav-desktop {
+      display: none;
+    }
+
+    .nav-desktop a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      margin-left: 2rem;
+      transition: var(--transition);
+    }
+
+    .nav-desktop a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Mobile Menu Button */
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background-color: var(--text-primary);
+      margin: 2px 0;
+      transition: var(--transition);
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(4px, 4px);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(4px, -4px);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--bg-color);
+      padding: 2rem 1.5rem;
+      z-index: 99;
+    }
+
+    .mobile-menu.active {
+      display: block;
+    }
+
+    .mobile-menu a {
+      display: block;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      text-decoration: none;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      border-radius: var(--radius-button);
+      padding: 0.625rem 1.25rem;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: var(--surface);
+    }
+
+    .btn-primary:hover {
+      background-color: #333;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--surface);
+      border-color: var(--text-secondary);
+    }
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-icon:hover {
+      gap: 0.5rem;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 1.5rem;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: var(--text-secondary);
+    }
+
+    /* Form Controls */
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-input);
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-secondary);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Form Status Messages */
+    .form-status {
+      display: none;
+      padding: 1rem;
+      border-radius: var(--radius-input);
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .form-status.success {
+      display: block;
+      background-color: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .form-status.error {
+      display: block;
+      background-color: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 1.5rem;
+    }
+
+    .hero-content {
+      max-width: 640px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .hero-tagline {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    /* About Section */
+    .about {
+      min-height: 80vh;
+      padding: 5rem 0;
+      background: linear-gradient(to bottom, transparent, rgba(230, 227, 218, 0.3), transparent);
+    }
+
+    .about-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .about-content h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-content p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .about-image {
+      display: flex;
+      height: auto;
+      width: auto;
+      justify-content: center;
+    }
+
+    .avatar {
+      width: 35vw;
+      height: auto;
+      border-radius: 8%;
+      object-fit: cover;
+      border: 3px solid var(--border);
+    }
+
+    /* Projects Section */
+    .projects {
+      padding: 5rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      color: var(--text-secondary);
+    }
+
+    .projects-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .project-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background-color: var(--bg-color);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+    }
+
+    /* Contact Section */
+    .contact {
+      padding: 5rem 0;
+    }
+
+    .contact-card {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .contact-card h2 {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-card>p {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Footer */
+    .app-footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .app-footer p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (min-width: 640px) {
+      .hero-actions {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .nav-desktop {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+
+      .about-grid {
+        display: flex;
+        gap: 2rem;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+      }
+
+      .about-content {
+        order: 1;
+
+      }
+
+      .about-image {
+        order: 2;
+      }
+
+      .avatar {
+        width: 20vw;
+        max-width: 250px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .about {
+        scroll-margin-top: 15vh;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="#" class="logo">Samu Mäkimattila</a>
+        <nav class="nav-desktop">
+          <a href="#about">Minusta</a>
+          <a href="#projects">Projektit</a>
+          <a href="#contact">Ota yhteyttä</a>
+        </nav>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
 
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" class="mobile-nav-link">Minusta</a>
+    <a href="#projects" class="mobile-nav-link">Projektit</a>
+    <a href="#contact" class="mobile-nav-link">Ota yhteyttä</a>
+  </div>
 
-    <!-- ============================================================
-       MAIN
-  ============================================================ -->
-    <main>
-        <div class="container">
-            <div class="card" id="metronome-card">
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1>Hei, olen S</h1>
+      <p class="hero-tagline">Teen verkkosivuja ja sovelluksia.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">Projektit</a>
+        <a href="#contact" class="btn btn-secondary">Ota yhteyttä</a>
+      </div>
+    </div>
+  </section>
 
-                <!-- BPM Section -->
-                <section class="bpm-section" aria-label="Tempo">
-                    <div class="bpm-display-row">
-                        <button class="bpm-step-btn btn-icon" id="bpm-dec" aria-label="Decrease BPM">−</button>
-
-                        <div class="bpm-value-wrapper" id="bpm-drag-area" role="spinbutton"
-                            aria-label="Beats per minute" aria-valuemin="20" aria-valuemax="300" tabindex="0"
-                            aria-valuenow="120">
-                            <div class="bpm-value" id="bpm-display">120</div>
-                            <div class="bpm-label">BPM</div>
-                        </div>
-
-                        <button class="bpm-step-btn btn-icon" id="bpm-inc" aria-label="Increase BPM">+</button>
-                    </div>
-
-                    <span class="tempo-marking" id="tempo-marking">Moderato</span>
-
-                </section>
-
-                <!-- Controls Row -->
-                <div class="controls-row" aria-label="Time signature settings">
-                    <div class="control-group">
-                        <label class="form-label" for="beats-per-bar-select">Beats / Bar</label>
-                        <select class="form-control" id="beats-per-bar-select" aria-label="Beats per bar">
-                        </select>
-                    </div>
-
-                    <div class="control-group">
-                        <button class="btn btn-secondary tap-btn" id="tap-btn" aria-label="Tap tempo"
-                            style="width: 100%; margin-bottom: 0;">
-                            Tap Tempo
-                        </button>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="form-label" for="clicks-per-beat-select">Subdivisions</label>
-                        <select class="form-control" id="clicks-per-beat-select" aria-label="Clicks per beat">
-                        </select>
-                    </div>
-                </div>
-
-                <hr class="divider" />
-
-                <!-- Beat Indicator Row -->
-                <section class="beat-row-section" aria-label="Beat indicators">
-                    <div class="beat-row" id="beat-row" role="group" aria-label="Beat accent controls">
-                    </div>
-                </section>
-
-                <hr class="divider" />
-
-                <!-- Playback -->
-                <section class="playback-section">
-                    <button class="play-btn" id="play-btn" aria-label="Start metronome" aria-pressed="false">
-                        <svg class="icon-play" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"
-                            aria-hidden="true">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                        <svg class="icon-stop" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"
-                            aria-hidden="true">
-                            <path d="M6 6h12v12H6z" />
-                        </svg>
-                    </button>
-                </section>
-
-                <p class="beat-status" id="beat-status">Ready</p>
-
-            </div><!-- /.card -->
-        </div><!-- /.container -->
-    </main>
-
-    <!-- ============================================================
-       FOOTER
-  ============================================================ -->
-    <footer class="app-footer">
-        <div class="container">
-            Made by Samu Mäkimattila
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <h2>Minusta</h2>
+          <p>Olen intohimoinen tekijä, joka rakastaa ideoiden toteuttamista. Uskon yksinkertaisuuden ja
+            yksityiskohtien voimaan.</p>
+          <p style="margin-top: 1rem;">Olen 17-vuotias lukiolainen, joka on kiinnostunut teknologiasta ja
+            ohjelmoinnista.
+            Olen tehnyt nettisivuja ja sovelluksia jo muutaman vuoden ajan, ja olen aina innokas oppimaan uutta.
+            Olen myös kiinnostunut musiikista ja muusta teknologiasta.</p>
+          <div style="display: flex; gap: 0.25rem; margin-top: 1rem;">
+            <p>Kuvat ottanut</p>
+            <a href="https://www.instagram.com/oskari.photography/">
+              <p>Oskari Kallio
+              </p>
+            </a>
+          </div>
         </div>
-    </footer>
+        <div class="about-image" style="display: flex; gap: 1rem;">
+          <div class="card" style="padding: 0.5rem;">
+            <img src="onpa hieno puku.jpg" alt="Profile" class="avatar">
+          </div>
+          <div class="card" style="padding: 0.5rem;">
+            <img src="rumpukuva.jpg" alt="Profile" class="avatar">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- ============================================================
-       JAVASCRIPT
-  ============================================================ -->
-    <script>
-        'use strict';
+  <!-- Projects Section -->
+  <section class="projects" id="projects">
+    <div class="container">
+      <div class="section-header">
+        <h2>Projektit</h2>
+        <p>Joitain projektejani</p>
+      </div>
+      <div class="projects-grid">
+        <article class="card project-card">
+          <h3>Songbook.</h3>
+          <p>tekemäni verkkosovellus, joka on suunniteltu helpottamaan laulujen keräämistä. Se on
+            rakennettu modernilla teknologialla ja intuitiivisella suunnittelulla.</p>
+          <div class="project-tags">
+            <span class="tag">React</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Vite</span>
+          </div>
+          <a href="https://songbook-amber.vercel.app/" class="btn-icon">Näytä <span>→</span></a>
+        </article>
 
-        // ─── State ────────────────────────────────────────────────────
-        const state = {
-            bpm: 120,
-            beatsPerBar: 4,
-            clicksPerBeat: 1,
-            isPlaying: false,
-            currentBeat: 0,       // 0-indexed
-            currentSubdiv: 0,       // 0-indexed within beat
-            beats: [],      // Array of { index, accentMode }
-        };
+        <article class="card project-card">
+          <h3>Project Beta</h3>
+          <p>An elegant dashboard for data visualization with real-time updates and customizable widgets for better
+            insights.</p>
+          <div class="project-tags">
+            <span class="tag">Vue.js</span>
+            <span class="tag">D3.js</span>
+            <span class="tag">Node.js</span>
+          </div>
+          <a href="#" class="btn-icon">View <span>→</span></a>
+        </article>
 
-        // Accent mode cycle order
-        const MODES = ['on', 'accent', 'off'];
+        <article class="card project-card">
+          <h3>Project Gamma</h3>
+          <p>A mobile-first e-commerce platform with seamless checkout flow and integrated payment processing.</p>
+          <div class="project-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">Stripe</span>
+            <span class="tag">PostgreSQL</span>
+          </div>
+          <a href="#" class="btn-icon">View <span>→</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
 
-        // ─── Tempo Markings ───────────────────────────────────────────
-        const TEMPO_MARKINGS = [
-            [20, 39, 'Larghissimo'],
-            [40, 54, 'Grave'],
-            [55, 65, 'Largo'],
-            [66, 75, 'Larghetto'],
-            [76, 107, 'Andante'],
-            [108, 119, 'Moderato'],
-            [120, 155, 'Allegro'],
-            [156, 175, 'Vivace'],
-            [176, 199, 'Presto'],
-            [200, 300, 'Prestissimo'],
-        ];
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="card contact-card">
+        <h2>Ota yhteyttä</h2>
+        <p>Haluatko minut töihin? Ota yhteyttä!</p>
 
-        function getTempoMarking(bpm) {
-            for (const [lo, hi, name] of TEMPO_MARKINGS) {
-                if (bpm >= lo && bpm <= hi) return name;
-            }
-            return '';
-        }
+        <div class="form-status" id="formStatus"></div>
 
-        // ─── DOM References ───────────────────────────────────────────
-        const bpmDisplay = document.getElementById('bpm-display');
-        const bpmDragArea = document.getElementById('bpm-drag-area');
-        const bpmDec = document.getElementById('bpm-dec');
-        const bpmInc = document.getElementById('bpm-inc');
-        const tempoMarking = document.getElementById('tempo-marking');
-        const tapBtn = document.getElementById('tap-btn');
-        const beatsSelect = document.getElementById('beats-per-bar-select');
-        const clicksSelect = document.getElementById('clicks-per-beat-select');
-        const beatRow = document.getElementById('beat-row');
-        const playBtn = document.getElementById('play-btn');
-        const beatStatus = document.getElementById('beat-status');
+        <form id="contactForm" action="https://formspree.io/f/mgorwokr" method="POST">
+          <div class="form-group">
+            <label for="name" class="form-label">Nimi</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Nimesi" required>
+          </div>
+          <div class="form-group">
+            <label for="email" class="form-label">Sähköposti</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="sina@esimerkki.com" required>
+          </div>
+          <div class="form-group">
+            <label for="message" class="form-label">Viesti</label>
+            <textarea id="message" name="message" class="form-control" placeholder="Kerro mitä haluaisit"
+              required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Lähetä viesti</button>
+        </form>
+      </div>
+    </div>
+  </section>
 
-        // ─── Populate Selects ─────────────────────────────────────────
-        function populateSelect(el, min, max, current) {
-            el.innerHTML = '';
-            for (let i = min; i <= max; i++) {
-                const opt = document.createElement('option');
-                opt.value = i;
-                opt.textContent = i;
-                if (i === current) opt.selected = true;
-                el.appendChild(opt);
-            }
-        }
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container">
+      <p>&copy; 2026 Samu Mäkimattila</p>
+    </div>
+  </footer>
 
-        populateSelect(beatsSelect, 1, 16, state.beatsPerBar);
-        populateSelect(clicksSelect, 1, 16, state.clicksPerBeat);
+  <script>
+    // Mobile Navigation Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-        // ─── Beat Array ───────────────────────────────────────────────
-        function initBeats() {
-            state.beats = Array.from({ length: state.beatsPerBar }, (_, i) => ({
-                index: i,
-                accentMode: i === 0 ? 'accent' : 'on',
-            }));
-        }
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
 
-        // ─── Render Beats ─────────────────────────────────────────────
-        function renderBeatRow() {
-            beatRow.innerHTML = '';
-            state.beats.forEach((beat, idx) => {
-                const el = document.createElement('button');
-                el.className = 'beat-indicator';
-                el.dataset.mode = beat.accentMode;
-                el.textContent = idx + 1;
-                el.setAttribute('aria-label', `Beat ${idx + 1}: ${beat.accentMode}`);
-                el.id = `beat-${idx}`;
+    // Close mobile menu on link click
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    });
 
-                el.addEventListener('click', () => cycleBeat(idx));
-                beatRow.appendChild(el);
-            });
-        }
+    // Contact Form Handling
+    const contactForm = document.getElementById('contactForm');
+    const formStatus = document.getElementById('formStatus');
 
-        function cycleBeat(idx) {
-            const beat = state.beats[idx];
-            const curr = MODES.indexOf(beat.accentMode);
-            beat.accentMode = MODES[(curr + 1) % MODES.length];
-            const el = document.getElementById(`beat-${idx}`);
-            if (el) {
-                el.dataset.mode = beat.accentMode;
-                el.setAttribute('aria-label', `Beat ${idx + 1}: ${beat.accentMode}`);
-            }
-        }
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-        function setActiveBeat(beatIdx) {
-            // Remove active from all
-            document.querySelectorAll('.beat-indicator').forEach(el => {
-                el.classList.remove('active', 'pulsing');
-            });
+      const submitButton = contactForm.querySelector('button[type="submit"]');
+      const originalText = submitButton.textContent;
+      submitButton.textContent = 'Sending...';
+      submitButton.disabled = true;
 
-            const el = document.getElementById(`beat-${beatIdx}`);
-            if (!el) return;
-            el.classList.add('active');
-
-            // Trigger pulse reflow
-            void el.offsetWidth;
-            el.classList.add('pulsing');
-        }
-
-        // ─── BPM Update ───────────────────────────────────────────────
-        function setBpm(val) {
-            state.bpm = Math.max(20, Math.min(300, Math.round(val)));
-            bpmDisplay.textContent = state.bpm;
-            bpmDragArea.setAttribute('aria-valuenow', state.bpm);
-            tempoMarking.textContent = getTempoMarking(state.bpm);
-            if (state.isPlaying) reschedule();
-        }
-
-        function reschedule() {
-            // Recompute interval; scheduler will pick it up on next tick
-        }
-
-        // ─── BPM +/- buttons ─────────────────────────────────────────
-        bpmDec.addEventListener('click', () => setBpm(state.bpm - 1));
-        bpmInc.addEventListener('click', () => setBpm(state.bpm + 1));
-
-        // Hold to repeat
-        function holdRepeat(btn, delta) {
-            let raf = null;
-            let holdTimer = null;
-            let speed = 120;
-
-            function repeat() {
-                setBpm(state.bpm + delta);
-                speed = Math.max(40, speed - 4);
-                holdTimer = setTimeout(repeat, speed);
-            }
-
-            btn.addEventListener('pointerdown', () => {
-                setBpm(state.bpm + delta);
-                raf = setTimeout(repeat, 400);
-            });
-
-            const stop = () => { clearTimeout(raf); clearTimeout(holdTimer); speed = 120; };
-            btn.addEventListener('pointerup', stop);
-            btn.addEventListener('pointerleave', stop);
-            btn.addEventListener('pointercancel', stop);
-        }
-
-        holdRepeat(bpmDec, -1);
-        holdRepeat(bpmInc, 1);
-
-        // ─── BPM Drag / Scroll ───────────────────────────────────────
-        let dragStartY = 0;
-        let dragStartBpm = 0;
-
-        bpmDragArea.addEventListener('pointerdown', e => {
-            dragStartY = e.clientY;
-            dragStartBpm = state.bpm;
-            bpmDragArea.classList.add('dragging');
-            bpmDragArea.setPointerCapture(e.pointerId);
+      try {
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: {
+            'Accept': 'application/json'
+          }
         });
 
-        bpmDragArea.addEventListener('pointermove', e => {
-            if (!bpmDragArea.classList.contains('dragging')) return;
-            const delta = Math.round((dragStartY - e.clientY) / 2.5);
-            setBpm(dragStartBpm + delta);
-        });
-
-        const endDrag = () => bpmDragArea.classList.remove('dragging');
-        bpmDragArea.addEventListener('pointerup', endDrag);
-        bpmDragArea.addEventListener('pointercancel', endDrag);
-
-        bpmDragArea.addEventListener('wheel', e => {
-            e.preventDefault();
-            setBpm(state.bpm + (e.deltaY < 0 ? 1 : -1));
-        }, { passive: false });
-
-        // Keyboard on BPM spinbutton
-        bpmDragArea.addEventListener('keydown', e => {
-            if (e.key === 'ArrowUp') { setBpm(state.bpm + 1); e.preventDefault(); }
-            if (e.key === 'ArrowDown') { setBpm(state.bpm - 1); e.preventDefault(); }
-        });
-
-        // ─── Tap Tempo ────────────────────────────────────────────────
-        let tapTimes = [];
-
-        tapBtn.addEventListener('click', () => {
-            const now = performance.now();
-            tapTimes.push(now);
-
-            // Keep only last 4 taps
-            if (tapTimes.length > 4) tapTimes.shift();
-
-            if (tapTimes.length >= 2) {
-                const intervals = [];
-                for (let i = 1; i < tapTimes.length; i++) {
-                    intervals.push(tapTimes[i] - tapTimes[i - 1]);
-                }
-                const avg = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-                setBpm(60000 / avg);
-            }
-
-            // Visual feedback
-            tapBtn.classList.add('active');
-            clearTimeout(tapBtn._clearTimer);
-            tapBtn._clearTimer = setTimeout(() => {
-                tapBtn.classList.remove('active');
-                if (performance.now() - tapTimes[tapTimes.length - 1] > 2000) {
-                    tapTimes = [];
-                }
-            }, 300);
-        });
-
-        // ─── Selects ─────────────────────────────────────────────────
-        beatsSelect.addEventListener('change', () => {
-            state.beatsPerBar = parseInt(beatsSelect.value);
-            stopMetronome();
-            initBeats();
-            renderBeatRow();
-        });
-
-        clicksSelect.addEventListener('change', () => {
-            state.clicksPerBeat = parseInt(clicksSelect.value);
-        });
-
-        // ─── Web Audio Scheduler ─────────────────────────────────────
-        let audioCtx = null;
-        let schedulerTimer = null;
-        let nextBeatTime = 0;    // AudioContext time of next beat
-        const LOOKAHEAD = 0.1;  // seconds to schedule ahead
-        const SCHED_PERIOD = 25;   // ms between scheduler calls
-
-        function ensureContext() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+        if (response.ok) {
+          formStatus.className = 'form-status success';
+          formStatus.textContent = 'Kiitos viestistäsi!';
+          contactForm.reset();
+        } else {
+          throw new Error('Form submission failed');
         }
-
-        /**
-         * Plays a brief click tone.
-         * @param {number} time  AudioContext time to schedule
-         * @param {'accent'|'normal'|'subdivision'} type
-         */
-        function scheduleClick(time, type) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            let freq, dur, vol;
-            switch (type) {
-                case 'accent':
-                    freq = 1050; dur = 0.08; vol = 0.9; break;
-                case 'normal':
-                    freq = 820; dur = 0.06; vol = 0.7; break;
-                case 'subdivision':
-                    freq = 580; dur = 0.03; vol = 0.3; break;
-            }
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, time);
-
-            gain.gain.setValueAtTime(0, time);
-            gain.gain.linearRampToValueAtTime(vol, time + 0.005);
-            gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
-
-            osc.start(time);
-            osc.stop(time + dur + 0.01);
-        }
-
-        // Track next beat/subdivide for UI sync
-        let nextBeatScheduledAt = 0;   // audioCtx time
-        let nextBeatIndex = 0;
-        let pendingUI = [];   // {beatIdx, audioTime}
-
-        function scheduler() {
-            const beatInterval = 60 / state.bpm;          // seconds per beat
-            const subdivInterval = beatInterval / state.clicksPerBeat;
-
-            while (nextBeatTime < audioCtx.currentTime + LOOKAHEAD) {
-                const beat = state.beats[state.currentBeat];
-                const isSkipped = beat.accentMode === 'off';
-                const isAccent = beat.accentMode === 'accent';
-
-                // Schedule subdivisions for this beat
-                for (let s = 0; s < state.clicksPerBeat; s++) {
-                    const t = nextBeatTime + s * subdivInterval;
-                    if (s === 0) {
-                        // Main beat click
-                        if (!isSkipped) {
-                            scheduleClick(t, isAccent ? 'accent' : 'normal');
-                        }
-                        // Queue UI update
-                        pendingUI.push({ beatIdx: state.currentBeat, audioTime: t });
-                    } else {
-                        // Subdivision tick
-                        if (!isSkipped && state.clicksPerBeat > 1) {
-                            scheduleClick(t, 'subdivision');
-                        }
-                    }
-                }
-
-                nextBeatTime += beatInterval;
-
-                state.currentBeat = (state.currentBeat + 1) % state.beatsPerBar;
-            }
-
-            // Process UI updates whose time has passed
-            const now = audioCtx.currentTime;
-            while (pendingUI.length && pendingUI[0].audioTime <= now + 0.02) {
-                const { beatIdx } = pendingUI.shift();
-                setActiveBeat(beatIdx);
-                updateBeatStatus(beatIdx);
-            }
-
-            schedulerTimer = setTimeout(scheduler, SCHED_PERIOD);
-        }
-
-        function updateBeatStatus(beatIdx) {
-            beatStatus.textContent = `♩ ${beatIdx + 1} / ${state.beatsPerBar}`;
-            beatStatus.classList.add('active');
-        }
-
-        // ─── Start / Stop ────────────────────────────────────────────
-        function startMetronome() {
-            ensureContext();
-            state.isPlaying = true;
-            state.currentBeat = 0;
-            pendingUI = [];
-            nextBeatTime = audioCtx.currentTime + 0.05;
-
-            playBtn.classList.add('playing');
-            playBtn.setAttribute('aria-label', 'Stop metronome');
-            playBtn.setAttribute('aria-pressed', 'true');
-
-            scheduler();
-        }
-
-        function stopMetronome() {
-            if (!state.isPlaying && !schedulerTimer) return;
-            state.isPlaying = false;
-            clearTimeout(schedulerTimer);
-            schedulerTimer = null;
-            pendingUI = [];
-
-            playBtn.classList.remove('playing');
-            playBtn.setAttribute('aria-label', 'Start metronome');
-            playBtn.setAttribute('aria-pressed', 'false');
-
-            beatStatus.textContent = 'Ready';
-            beatStatus.classList.remove('active');
-
-            // Clear active beat
-            document.querySelectorAll('.beat-indicator').forEach(el => {
-                el.classList.remove('active', 'pulsing');
-            });
-        }
-
-        playBtn.addEventListener('click', () => {
-            if (state.isPlaying) {
-                stopMetronome();
-            } else {
-                startMetronome();
-            }
-        });
-
-        // ─── Keyboard shortcut: Space to play/stop ────────────────────
-        document.addEventListener('keydown', e => {
-            if (e.code === 'Space' && e.target === document.body) {
-                e.preventDefault();
-                playBtn.click();
-            }
-        });
-
-        // ─── Init ─────────────────────────────────────────────────────
-        initBeats();
-        renderBeatRow();
-        setBpm(120);
-    </script>
+      } catch (error) {
+        formStatus.className = 'form-status error';
+        formStatus.textContent = 'Jotain meni vikaan. Yritä myöhemmin uudelleen.';
+      } finally {
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+      }
+    });
+  </script>
 </body>
 
 </html>
