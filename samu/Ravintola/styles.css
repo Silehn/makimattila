@@ -96,6 +96,9 @@ nav.scrolled {
     margin: 0 auto;
     padding: 0 20px;
     gap: 15px;
+    background-color: var(--color-bg);
+    opacity: 0.93;
+    box-shadow: var(--color-bg);
 }
 
 .logo {
@@ -461,7 +464,7 @@ footer {
 /* Desktop styles (min-width: 768px) */
 @media (min-width: 768px) {
     nav {
-        padding: 25px 0;
+        padding: 20px 0;
     }
 
     nav.scrolled {
