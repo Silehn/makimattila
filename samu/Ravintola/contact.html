@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Oria</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">ORIA</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <header class="page-hero">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=2000"
+            alt="Restaurant Details" class="hero-img">
+        <div class="hero-overlay"></div>
+        <h1 class="fade-in">Visit Us</h1>
+    </header>
+    <section class="section container">
+        <div class="contact-grid">
+            <div class="contact-info fade-in">
+                <h2>Get in Touch</h2>
+
+                <div class="contact-block">
+                    <h3>Location</h3>
+                    <p>1280 Culinary Avenue<br>Metropolis, NY 10012</p>
+                </div>
+
+                <div class="contact-block">
+                    <h3>Contact</h3>
+                    <p>+1 (555) 123-4567<br>reservations@oriarestaurant.com</p>
+                </div>
+
+                <div class="contact-block">
+                    <h3>Hours</h3>
+                    <table class="hours-table">
+                        <tr>
+                            <td>Mon – Wed</td>
+                            <td>5:30 PM – 10:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>Thu – Sat</td>
+                            <td>5:00 PM – 11:00 PM</td>
+                        </tr>
+                        <tr>
+                            <td>Sunday</td>
+                            <td>Closed</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="contact-form">
+                    <h3>Send a Message</h3>
+                    <form onsubmit="event.preventDefault();">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="contact-map fade-in">
+                <div class="map-container">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.6175405072064!2d-73.98785318459418!3d40.74844047932847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1620063255146!5m2!1sen!2sus"
+                        allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <p class="copyright">&copy; 2026 Oria Restaurant. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+</body>
+
+</html>
